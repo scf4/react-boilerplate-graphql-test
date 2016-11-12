@@ -15,12 +15,14 @@ import 'file?name=[name].[ext]!./.htaccess';
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { useScroll } from 'react-router-scroll';
 import LanguageProvider from 'containers/LanguageProvider';
 import configureStore from './store';
+
+import { ApolloProvider, client } from './apollo';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
@@ -51,10 +53,9 @@ const rootRoute = {
   childRoutes: createRoutes(store),
 };
 
-
 const render = (translatedMessages) => {
   ReactDOM.render(
-    <Provider store={store}>
+    <ApolloProvider client={client} store={store}>
       <LanguageProvider messages={translatedMessages}>
         <Router
           history={history}
@@ -66,7 +67,8 @@ const render = (translatedMessages) => {
           }
         />
       </LanguageProvider>
-    </Provider>,
+    </ApolloProvider>
+    ,
     document.getElementById('app')
   );
 };
